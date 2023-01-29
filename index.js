@@ -34,6 +34,26 @@ app.get('/tasks/:id', (req, res) => {
   });
 });
 
+app.post('/tasks', (req, res) => {
+  const newId = tasks[tasks.length - 1].id + 1;
+  const newTask = {
+    id: newId,
+    name: req.body.name,
+    isCompleted: false
+  };
+  tasks.push(newTask);
+  fs.writeFile('./data/todoData.json', JSON.stringify(tasks), (err) => {
+    res.status(201).json({
+      status: 'success',
+      data: {
+        task: newTask
+      }
+    });
+  });
+});
+
+
+
 
 
 const port = 5000;
