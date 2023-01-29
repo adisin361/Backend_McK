@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Laundry",
+    "isCompleted": false
+  },
+  {
+    "id": 2,
+    "name": "Buy Milk",
+    "isCompleted": false
+  },
+  {
+    "id": 3,
+    "name": "Haircut",
+    "isCompleted": false
+  }
+]
