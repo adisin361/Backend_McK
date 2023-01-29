@@ -6,7 +6,7 @@ let app = express();
 app.use(express.json());
 let tasks = JSON.parse(fs.readFileSync('./data/todoData.json'));
 
-app.get('/tasks', (req, res) => {
+const getAllTasks = (req, res) => {
   res.status(200).json({
     status: 'success',
     count: tasks.length,
@@ -14,9 +14,9 @@ app.get('/tasks', (req, res) => {
       tasks: tasks
     }
   });
-});
+};
 
-app.get('/tasks/:id', (req, res) => {
+const getTask = (req, res) => {
   const id = req.params.id * 1;
   const task = tasks.find(el => el.id === id);
   if (!task) {
@@ -32,9 +32,9 @@ app.get('/tasks/:id', (req, res) => {
       task: task
     }
   });
-});
+};
 
-app.post('/tasks', (req, res) => {
+const createTask = (req, res) => {
   const newId = tasks[tasks.length - 1].id + 1;
   const newTask = {
     id: newId,
@@ -50,9 +50,9 @@ app.post('/tasks', (req, res) => {
       }
     });
   });
-});
+};
 
-app.delete('/tasks/:id', (req, res) => {
+const deleteTask = (req, res) => {
   const id = req.params.id * 1;
   const taskToDelete = tasks.find(el => el.id === id);
   const taskIndex = tasks.indexOf(taskToDelete);
@@ -71,9 +71,9 @@ app.delete('/tasks/:id', (req, res) => {
       }
     });
   });
-});
+};
 
-app.patch('/tasks/:id', (req, res) => {
+const updateTask = (req, res) => {
   const taskId = req.params.id * 1;
   const task = tasks.find(el => el.id === taskId);
   if (!task) {
@@ -85,7 +85,7 @@ app.patch('/tasks/:id', (req, res) => {
   let index = tasks.indexOf(task);
   Object.assign(task, req.body);
   tasks[index] = task;
-  fs.writeFile('./data/todoData', JSON.stringify(tasks), (err) => {
+  fs.writeFile('./data/todoData.json', JSON.stringify(tasks), (err) => {
     res.status(200).json({
       status: 'success',
       data: {
@@ -93,7 +93,17 @@ app.patch('/tasks/:id', (req, res) => {
       }
     });
   });
-});
+};
+
+app.get('/tasks', getAllTasks);
+
+app.get('/tasks/:id', getTask);
+
+app.post('/tasks', createTask);
+
+app.delete('/tasks/:id', deleteTask);
+
+app.patch('/tasks/:id', updateTask);
 
 
 const port = 5000;
