@@ -73,7 +73,27 @@ app.delete('/tasks/:id', (req, res) => {
   });
 });
 
-
+app.patch('/tasks/:id', (req, res) => {
+  const taskId = req.params.id * 1;
+  const task = tasks.find(el => el.id === taskId);
+  if (!task) {
+    return res.status(404).json({
+      status: 'success',
+      message: `no task found with id ${taskId}`
+    });
+  }
+  let index = tasks.indexOf(task);
+  Object.assign(task, req.body);
+  tasks[index] = task;
+  fs.writeFile('./data/todoData', JSON.stringify(tasks), (err) => {
+    res.status(200).json({
+      status: 'success',
+      data: {
+        task: task
+      }
+    });
+  });
+});
 
 
 const port = 5000;
