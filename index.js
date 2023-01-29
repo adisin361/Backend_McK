@@ -52,6 +52,26 @@ app.post('/tasks', (req, res) => {
   });
 });
 
+app.delete('/tasks/:id', (req, res) => {
+  const id = req.params.id * 1;
+  const taskToDelete = tasks.find(el => el.id === id);
+  const taskIndex = tasks.indexOf(taskToDelete);
+  if (!taskToDelete) {
+    return res.status(404).json({
+      status: 'fail',
+      message: `no task found with id ${id}`
+    });
+  }
+  tasks.splice(taskIndex, 1);
+  fs.writeFile('./data/todoData.json', JSON.stringify(tasks), (err) => {
+    res.status(200).json({
+      status: 'success',
+      data: {
+        task: null
+      }
+    });
+  });
+});
 
 
 
