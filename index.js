@@ -95,16 +95,27 @@ const updateTask = (req, res) => {
   });
 };
 
-app.get('/tasks', getAllTasks);
 
-app.get('/tasks/:id', getTask);
 
-app.post('/tasks', createTask);
+// app.get('/tasks', getAllTasks);
 
-app.delete('/tasks/:id', deleteTask);
+// app.get('/tasks/:id', getTask);
 
-app.patch('/tasks/:id', updateTask);
+// app.post('/tasks', createTask);
 
+// app.delete('/tasks/:id', deleteTask);
+
+// app.patch('/tasks/:id', updateTask);
+
+
+app.route('/tasks')
+  .get(getAllTasks)
+  .post(createTask);
+
+app.route('/tasks/:id')
+  .get(getTask)
+  .patch(updateTask)
+  .delete(deleteTask);
 
 const port = 5000;
 app.listen(port, () => {
